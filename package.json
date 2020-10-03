@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint --fix app.js",
+    "lint": "./node_modules/.bin/eslint --fix ./src",
     "dev": "./node_modules/.bin/nodemon app.js --exec 'npm run lint'",
+    "start": "node app.js input.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,5 +25,8 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1",
     "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "date-fns": "^2.16.1"
   }
 }
