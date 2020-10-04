@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const http = require('http');
 
 const BASE_URL = 'http://private-38e18c-uzduotis.apiary-mock.com/config';
@@ -8,11 +9,15 @@ const getConfig = (url) => {
   return new Promise((resolve, reject) => {
     http
       .get(url, (res) => {
-        const { statusCode } = res;
+        const { statusCode, headers } = res;
+        const contentType = headers['content-type'];
 
-        // eslint-disable-next-line no-unused-expressions
         statusCode !== 200
           ? reject(new Error(`Failed performing the request.\nGET  ${url}  ${statusCode}`))
+          : false;
+
+        contentType !== 'application/json'
+          ? reject(new Error(`Invalid content-type '${contentType}': Expecting 'application/json'.`))
           : false;
 
         res.setEncoding('utf-8');
@@ -29,6 +34,8 @@ const getConfig = (url) => {
       .on('error', (err) => {
         reject(err);
       });
+  }).catch((err) => {
+    throw new Error(`Failed to get configuration.${err.message}`);
   });
 };
 
