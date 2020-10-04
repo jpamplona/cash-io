@@ -2,6 +2,7 @@ const {
   getCashInConfig,
   getCashOutNaturalConfig,
   getCashOutJuridicalConfig,
+  validateConfigurations,
 } = require('./config');
 const { read } = require('./file');
 const { getCommissionFeeCashIn } = require('./cash-in');
@@ -26,6 +27,13 @@ const execute = (file) => {
         getCashOutNaturalConfig,
         getCashOutJuridicalConfig,
       ]);
+
+      // validate cash in and cash out configurations before processing transactions
+      validateConfigurations(
+        configCashIn,
+        configCashOutNatural,
+        configCashOutJuridical,
+      );
 
       // read input file
       const transactions = await read(file);
