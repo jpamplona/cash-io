@@ -13,6 +13,31 @@ const schemaTransaction = Joi.object().keys({
   operation: schemaOperation,
 });
 
+const schemaCommissionLimit = {
+  amount: Joi.number().required(),
+  currency: Joi.string().valid('EUR').required(),
+};
+
+const schemaCashInConfig = Joi.object().keys({
+  percents: Joi.number().required(),
+  max: schemaCommissionLimit,
+});
+
+const schemaCashOutNaturalConfig = Joi.object().keys({
+  percents: Joi.number().required(),
+  week_limit: schemaCommissionLimit,
+});
+
+const schemaCashOutJuridicalConfig = Joi.object().keys({
+  percents: Joi.number().required(),
+  min: schemaCommissionLimit,
+});
+
 module.exports = {
+  schemaOperation,
   schemaTransaction,
+  schemaCommissionLimit,
+  schemaCashInConfig,
+  schemaCashOutNaturalConfig,
+  schemaCashOutJuridicalConfig,
 };
