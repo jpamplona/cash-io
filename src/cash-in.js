@@ -1,4 +1,4 @@
-const computeCommissionFee = (amount, commissionPercent, commissionMaxAmount) => {
+const computeCommissionFeeCashIn = (amount, commissionPercent, commissionMaxAmount) => {
   const commissionPercentRate = commissionPercent / 100;
   let commissionFee = amount * commissionPercentRate;
 
@@ -10,7 +10,7 @@ const computeCommissionFee = (amount, commissionPercent, commissionMaxAmount) =>
   return commissionFee.toFixed(2);
 };
 
-const getCommission = (
+const getCommissionFeeCashIn = (
   allowedCurrencies,
   {
     type,
@@ -20,20 +20,17 @@ const getCommission = (
     percents,
     max: { currency: configCurrency, amount: configMaxAmount },
   },
-) => {
-  if (
+) => (
+  (
     type === 'cash_in'
     && allowedCurrencies.includes(operationCurrency)
     && allowedCurrencies.includes(configCurrency)
     && operationCurrency === configCurrency
-  ) {
-    return computeCommissionFee(operationAmount, percents, configMaxAmount);
-  }
-
-  return 'Invalid Cash In transaction.';
-};
+  )
+    ? computeCommissionFeeCashIn(operationAmount, percents, configMaxAmount)
+    : 'Invalid Cash In transaction.');
 
 module.exports = {
-  computeCommissionFee,
-  getCommission,
+  computeCommissionFeeCashIn,
+  getCommissionFeeCashIn,
 };

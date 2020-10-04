@@ -1,4 +1,4 @@
-const computeCommissionFeeNatural = (
+const computeCommissionFeeCashOutNatural = (
   amount,
   commissionPercent,
   weekTransactionHistory,
@@ -32,7 +32,7 @@ const computeCommissionFeeNatural = (
   return commissionFee.toFixed(2);
 };
 
-const getCommissionFeeNatural = (
+const getCommissionFeeCashOutNatural = (
   allowedCurrencies,
   weekTransactionHistory,
   {
@@ -45,27 +45,25 @@ const getCommissionFeeNatural = (
     percents,
     week_limit: { currency: configCurrency, amount: configWeekLimitAmount },
   },
-) => {
-  if (
+) => (
+  (
     type === 'cash_out'
     && userType === 'natural'
     && allowedCurrencies.includes(operationCurrency)
     && allowedCurrencies.includes(configCurrency)
     && operationCurrency === configCurrency
-  ) {
-    return computeCommissionFeeNatural(
+  )
+    ? computeCommissionFeeCashOutNatural(
       operationAmount,
       percents,
       weekTransactionHistory,
       configWeekLimitAmount,
       userId,
-    );
-  }
+    )
+    : 'Invalid Cash Out(Natural) transaction.'
+);
 
-  return 'Invalid Cash Out(Natural) transaction.';
-};
-
-const computeCommissionFeeJuridical = (amount, commissionPercent, commissionMinAmount) => {
+const computeCommissionFeeCashOutJuridical = (amount, commissionPercent, commissionMinAmount) => {
   const commissionPercentRate = commissionPercent / 100;
   let commissionFee = amount * commissionPercentRate;
 
@@ -77,7 +75,7 @@ const computeCommissionFeeJuridical = (amount, commissionPercent, commissionMinA
   return commissionFee.toFixed(2);
 };
 
-const getCommissionFeeJuridical = (
+const getCommissionFeeCashOutJuridical = (
   allowedCurrencies,
   {
     type,
@@ -88,23 +86,21 @@ const getCommissionFeeJuridical = (
     percents,
     min: { currency: configCurrency, amount: configMinAmount },
   },
-) => {
-  if (
+) => (
+  (
     type === 'cash_out'
     && userType === 'juridical'
     && allowedCurrencies.includes(operationCurrency)
     && allowedCurrencies.includes(configCurrency)
     && operationCurrency === configCurrency
-  ) {
-    return computeCommissionFeeJuridical(operationAmount, percents, configMinAmount);
-  }
-
-  return 'Invalid Cash Out(Juridical) transaction.';
-};
+  )
+    ? computeCommissionFeeCashOutJuridical(operationAmount, percents, configMinAmount)
+    : 'Invalid Cash Out(Juridical) transaction.'
+);
 
 module.exports = {
-  computeCommissionFeeNatural,
-  getCommissionFeeNatural,
-  computeCommissionFeeJuridical,
-  getCommissionFeeJuridical,
+  computeCommissionFeeCashOutNatural,
+  getCommissionFeeCashOutNatural,
+  computeCommissionFeeCashOutJuridical,
+  getCommissionFeeCashOutJuridical,
 };

@@ -4,9 +4,12 @@ const {
   getCashOutJuridicalConfig,
 } = require('./config');
 const { read } = require('./file');
-const cashIn = require('./cash-in');
-const cashOut = require('./cash-out');
-const { addToWeekTransactionHistory } = require('./transaction-history');
+const { getCommissionFeeCashIn } = require('./cash-in');
+const {
+  getCommissionFeeCashOutNatural,
+  getCommissionFeeCashOutJuridical,
+} = require('./cash-out');
+const { addToWeekTransactionHistory } = require('./transaction');
 
 const execute = (file) => {
   const allowedCurrencies = ['EUR'];
@@ -35,7 +38,7 @@ const execute = (file) => {
         if (transactionType === 'cash_in') {
           // output computed comission for Cash In
           console.log(
-            cashIn.getCommission(
+            getCommissionFeeCashIn(
               allowedCurrencies,
               transaction,
               configCashIn,
@@ -51,7 +54,7 @@ const execute = (file) => {
 
             // output computed comission for Cash Out (Natural)
             console.log(
-              cashOut.getCommissionFeeNatural(
+              getCommissionFeeCashOutNatural(
                 allowedCurrencies,
                 weekTransactionHistory,
                 transaction,
@@ -61,7 +64,7 @@ const execute = (file) => {
           } else if (userType === 'juridical') {
             // output computed comission for Cash Out (Juridical)
             console.log(
-              cashOut.getCommissionFeeJuridical(
+              getCommissionFeeCashOutJuridical(
                 allowedCurrencies,
                 transaction,
                 configCashOutJuridical,
