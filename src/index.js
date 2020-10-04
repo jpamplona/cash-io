@@ -9,7 +9,7 @@ const {
   getCommissionFeeCashOutNatural,
   getCommissionFeeCashOutJuridical,
 } = require('./cash-out');
-const { addToWeekTransactionHistory } = require('./transaction');
+const { addToWeekTransactionHistory, isValidTransaction } = require('./transaction');
 
 const execute = (file) => {
   const allowedCurrencies = ['EUR'];
@@ -33,45 +33,50 @@ const execute = (file) => {
       let weekTransactionHistory = [];
 
       transactions.forEach((transaction) => {
-        const { type: transactionType, user_type: userType } = transaction;
+        // check if transaction is valid
+        if (isValidTransaction(transaction)) {
+          const { type: transactionType, user_type: userType } = transaction;
 
-        if (transactionType === 'cash_in') {
-          // output computed comission for Cash In
-          console.log(
-            getCommissionFeeCashIn(
-              allowedCurrencies,
-              transaction,
-              configCashIn,
-            ),
-          );
-        } else if (transactionType === 'cash_out') {
-          if (userType === 'natural') {
-            // update weekly transaction history
-            weekTransactionHistory = addToWeekTransactionHistory(
-              weekTransactionHistory,
-              transaction,
-            );
-
-            // output computed comission for Cash Out (Natural)
+          if (transactionType === 'cash_in') {
+            // output computed comission for Cash In
             console.log(
-              getCommissionFeeCashOutNatural(
+              getCommissionFeeCashIn(
                 allowedCurrencies,
+                transaction,
+                configCashIn,
+              ),
+            );
+          } else if (transactionType === 'cash_out') {
+            if (userType === 'natural') {
+              // update weekly transaction history
+              weekTransactionHistory = addToWeekTransactionHistory(
                 weekTransactionHistory,
                 transaction,
-                configCashOutNatural,
-              ),
-            );
-          } else if (userType === 'juridical') {
-            // output computed comission for Cash Out (Juridical)
-            console.log(
-              getCommissionFeeCashOutJuridical(
-                allowedCurrencies,
-                transaction,
-                configCashOutJuridical,
-              ),
-            );
+              );
+
+              // output computed comission for Cash Out (Natural)
+              console.log(
+                getCommissionFeeCashOutNatural(
+                  allowedCurrencies,
+                  weekTransactionHistory,
+                  transaction,
+                  configCashOutNatural,
+                ),
+              );
+            } else if (userType === 'juridical') {
+              // output computed comission for Cash Out (Juridical)
+              console.log(
+                getCommissionFeeCashOutJuridical(
+                  allowedCurrencies,
+                  transaction,
+                  configCashOutJuridical,
+                ),
+              );
+            } else {
+              console.log(`Invalid user type '${userType}'`);
+            }
           } else {
-            console.log('Invalid user type');
+            console.log(`Invalid transaction type ${transactionType}`);
           }
         } else {
           console.log('Invalid transaction');
