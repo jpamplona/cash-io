@@ -8,7 +8,7 @@ const schemaOperation = Joi.object().keys({
 const schemaTransaction = Joi.object().keys({
   date: Joi.date().required(),
   user_id: Joi.number().required(),
-  user_type: Joi.string().required(),
+  user_type: Joi.string().valid('natural', 'juridical').required(),
   type: Joi.string().required().valid('cash_in', 'cash_out').required(),
   operation: schemaOperation,
 });
