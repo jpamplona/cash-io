@@ -1,5 +1,10 @@
 /* eslint-disable no-unused-expressions */
 const http = require('http');
+const {
+  schemaCashInConfig,
+  schemaCashOutNaturalConfig,
+  schemaCashOutJuridicalConfig,
+} = require('./schema');
 
 const BASE_URL = 'http://private-38e18c-uzduotis.apiary-mock.com/config';
 
@@ -43,9 +48,38 @@ const getCashInConfig = getConfig(`${BASE_URL}/cash-in`);
 const getCashOutNaturalConfig = getConfig(`${BASE_URL}/cash-out/natural`);
 const getCashOutJuridicalConfig = getConfig(`${BASE_URL}/cash-out/juridical`);
 
+const isValidCashInConfig = (config) => {
+  const { error } = schemaCashInConfig.validate(config);
+  return !error;
+};
+
+const isValidCashOutNaturalConfig = (config) => {
+  const { error } = schemaCashOutNaturalConfig.validate(config);
+  return !error;
+};
+
+const isValidCashOutJuridicalConfig = (config) => {
+  const { error } = schemaCashOutJuridicalConfig.validate(config);
+  return !error;
+};
+
+const validateConfigurations = (configCashIn, configCashOutNatural, configCashOutJuridical) => {
+  const errMessage = 'Unable to process transactions';
+
+  if (!isValidCashInConfig(configCashIn)) throw new Error(`${errMessage}: Invalid Cash In configuration`);
+
+  if (!isValidCashOutNaturalConfig(configCashOutNatural)) throw new Error(`${errMessage}: Invalid Cash Out(Natural) configuration`);
+
+  if (!isValidCashOutJuridicalConfig(configCashOutJuridical)) throw new Error(`${errMessage}: Invalid Cash Out(Juridical) configuration`);
+};
+
 module.exports = {
   getConfig,
   getCashInConfig,
   getCashOutNaturalConfig,
   getCashOutJuridicalConfig,
+  isValidCashInConfig,
+  isValidCashOutNaturalConfig,
+  isValidCashOutJuridicalConfig,
+  validateConfigurations,
 };
