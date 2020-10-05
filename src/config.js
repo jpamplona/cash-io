@@ -63,14 +63,24 @@ const isValidCashOutJuridicalConfig = (config) => {
   return !error;
 };
 
-const validateConfigurations = (configCashIn, configCashOutNatural, configCashOutJuridical) => {
+const validateConfigurations = (
+  configCashIn,
+  configCashOutNatural,
+  configCashOutJuridical,
+) => {
   const errMessage = 'Unable to process transactions';
 
-  if (!isValidCashInConfig(configCashIn)) throw new Error(`${errMessage}: Invalid Cash In configuration`);
+  if (!isValidCashInConfig(configCashIn)) {
+    throw new Error(`${errMessage}: Invalid Cash In configuration`);
+  }
 
-  if (!isValidCashOutNaturalConfig(configCashOutNatural)) throw new Error(`${errMessage}: Invalid Cash Out(Natural) configuration`);
+  if (!isValidCashOutNaturalConfig(configCashOutNatural)) {
+    throw new Error(`${errMessage}: Invalid Cash Out(Natural) configuration`);
+  }
 
-  if (!isValidCashOutJuridicalConfig(configCashOutJuridical)) throw new Error(`${errMessage}: Invalid Cash Out(Juridical) configuration`);
+  if (!isValidCashOutJuridicalConfig(configCashOutJuridical)) {
+    throw new Error(`${errMessage}: Invalid Cash Out(Juridical) configuration`);
+  }
 };
 
 module.exports = {

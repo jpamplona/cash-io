@@ -39,11 +39,17 @@ const getCommissionFeeCashOutNatural = (
     type,
     user_id: userId,
     user_type: userType,
-    operation: { currency: operationCurrency, amount: operationAmount },
+    operation: {
+      currency: operationCurrency,
+      amount: operationAmount,
+    },
   },
   {
     percents,
-    week_limit: { currency: configCurrency, amount: configWeekLimitAmount },
+    week_limit: {
+      currency: configCurrency,
+      amount: configWeekLimitAmount,
+    },
   },
 ) => (
   (
@@ -63,7 +69,11 @@ const getCommissionFeeCashOutNatural = (
     : 'Invalid Cash Out(Natural) transaction.'
 );
 
-const computeCommissionFeeCashOutJuridical = (amount, commissionPercent, commissionMinAmount) => {
+const computeCommissionFeeCashOutJuridical = (
+  amount,
+  commissionPercent,
+  commissionMinAmount,
+) => {
   const commissionPercentRate = commissionPercent / 100;
   let commissionFee = amount * commissionPercentRate;
 
@@ -80,11 +90,17 @@ const getCommissionFeeCashOutJuridical = (
   {
     type,
     user_type: userType,
-    operation: { currency: operationCurrency, amount: operationAmount },
+    operation: {
+      currency: operationCurrency,
+      amount: operationAmount,
+    },
   },
   {
     percents,
-    min: { currency: configCurrency, amount: configMinAmount },
+    min: {
+      currency: configCurrency,
+      amount: configMinAmount,
+    },
   },
 ) => (
   (
@@ -94,7 +110,11 @@ const getCommissionFeeCashOutJuridical = (
     && allowedCurrencies.includes(configCurrency)
     && operationCurrency === configCurrency
   )
-    ? computeCommissionFeeCashOutJuridical(operationAmount, percents, configMinAmount)
+    ? computeCommissionFeeCashOutJuridical(
+      operationAmount,
+      percents,
+      configMinAmount,
+    )
     : 'Invalid Cash Out(Juridical) transaction.'
 );
 

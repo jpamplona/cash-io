@@ -1,4 +1,8 @@
-const computeCommissionFeeCashIn = (amount, commissionPercent, commissionMaxAmount) => {
+const computeCommissionFeeCashIn = (
+  amount,
+  commissionPercent,
+  commissionMaxAmount,
+) => {
   const commissionPercentRate = commissionPercent / 100;
   let commissionFee = amount * commissionPercentRate;
 
@@ -14,11 +18,19 @@ const getCommissionFeeCashIn = (
   allowedCurrencies,
   {
     type,
-    operation: { currency: operationCurrency, amount: operationAmount },
+    operation:
+      {
+        currency: operationCurrency,
+        amount: operationAmount,
+      },
   },
   {
     percents,
-    max: { currency: configCurrency, amount: configMaxAmount },
+    max: {
+      currency:
+      configCurrency,
+      amount: configMaxAmount,
+    },
   },
 ) => (
   (
