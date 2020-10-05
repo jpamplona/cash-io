@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const { computeCommissionFeeCashIn, getCommissionFeeCashIn } = require('../src/cash-in');
 
 describe('Cash In', () => {

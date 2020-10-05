@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const { read } = require('../src/file');
 
 const dir = `${__dirname}/input_files`;

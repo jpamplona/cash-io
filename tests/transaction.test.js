@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const { parse } = require('date-fns');
 const { addToWeekTransactionHistory, isValidTransaction } = require('../src/transaction');
 
