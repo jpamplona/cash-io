@@ -15,7 +15,7 @@ const read = (path) => {
       try {
         return resolve(JSON.parse(data));
       } catch (e) {
-        return reject(new Error('Invalid input file: Expecting JSON file.'));
+        return reject(new Error('Invalid input file: Expecting a valid JSON data.'));
       }
     });
   }).catch((err) => {
