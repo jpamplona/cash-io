@@ -1,0 +1,8 @@
+"date": "2016-02-23",
+"user_id": 1,
+"user_type": "juridical",
+"type": "cash_out",
+"operation": {
+  "amount": 1000000.00,
+  "currency": "EUR"
+}
