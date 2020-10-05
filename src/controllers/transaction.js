@@ -1,5 +1,5 @@
 const { parse, isSameWeek } = require('date-fns');
-const { schemaTransaction } = require('./schema');
+const { schemaTransaction } = require('../schema');
 
 const addToWeekTransactionHistory = (
   weekTransactionHistory,

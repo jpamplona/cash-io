@@ -3,14 +3,14 @@ const {
   getCashOutNaturalConfig,
   getCashOutJuridicalConfig,
   validateConfigurations,
-} = require('./config');
-const { read } = require('./file');
-const { getCommissionFeeCashIn } = require('./cash-in');
+} = require('./controllers/config');
+const { read } = require('./controllers/file');
+const { getCommissionFeeCashIn } = require('./controllers/cash-in');
 const {
   getCommissionFeeCashOutNatural,
   getCommissionFeeCashOutJuridical,
-} = require('./cash-out');
-const { addToWeekTransactionHistory, isValidTransaction } = require('./transaction');
+} = require('./controllers/cash-out');
+const { addToWeekTransactionHistory, isValidTransaction } = require('./controllers/transaction');
 
 const execute = (file) => {
   const allowedCurrencies = ['EUR'];

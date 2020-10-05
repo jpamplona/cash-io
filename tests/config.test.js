@@ -6,7 +6,7 @@ const {
   isValidCashOutNaturalConfig,
   isValidCashOutJuridicalConfig,
   validateConfigurations,
-} = require('../src/config');
+} = require('../src/controllers/config');
 
 describe('Cash In/Out Configurations', () => {
   const configCashIn = {

@@ -3,7 +3,7 @@ const {
   computeCommissionFeeCashOutJuridical,
   getCommissionFeeCashOutNatural,
   getCommissionFeeCashOutJuridical,
-} = require('../src/cash-out');
+} = require('../src/controllers/cash-out');
 
 describe('Cash Out', () => {
   const allowedCurrencies = ['EUR'];
