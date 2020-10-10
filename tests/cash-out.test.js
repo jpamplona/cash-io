@@ -4,6 +4,7 @@ import {
   computeCommissionFeeCashOutJuridical,
   getCommissionFeeCashOutNatural,
   getCommissionFeeCashOutJuridical,
+  getCommissionFeeCashOut,
 } from '../src/controllers/cash-out';
 
 describe('Cash Out', () => {
@@ -524,6 +525,97 @@ describe('Cash Out', () => {
           expect(result).toEqual('Invalid Cash Out(Juridical) transaction.');
         });
       });
+    });
+  });
+
+  describe('Get Cash Out Commission Fee for Natural or Juridical Person', () => {
+    const configCashOutNatural = {
+      percents: 0.3,
+      week_limit: {
+        amount: 1000,
+        currency: 'EUR',
+      },
+    };
+    const configCashOutJuridical = {
+      percents: 0.3,
+      min: {
+        amount: 0.5,
+        currency: 'EUR',
+      },
+    };
+
+    it('Should get cash out commission fee for Natural Person', () => {
+      const transaction = {
+        date: '2016-02-23',
+        user_id: 2,
+        user_type: 'natural',
+        type: 'cash_out',
+        operation: {
+          amount: 30000.00,
+          currency: 'EUR',
+        },
+      };
+      const weekTransactionHistory = {
+        '2': [
+          {
+            date: new Date('2016-02-23T00:00:00.000Z'),
+            userId: 2,
+            amount: 30000.00,
+          },
+        ],
+      };
+      const { user_type: userType } = transaction;
+      const result = getCommissionFeeCashOut(
+        userType,
+        allowedCurrencies,
+        transaction,
+        configCashOutNatural,
+        weekTransactionHistory,
+      );
+
+      expect(result).toEqual('90.00');
+    });
+    it('Should get cash out commission fee for Juridical Person', () => {
+      const transaction = {
+        date: '2016-01-10',
+        user_id: 2,
+        user_type: 'juridical',
+        type: 'cash_out',
+        operation: {
+          amount: 10.00,
+          currency: 'EUR',
+        },
+      };
+      const { user_type: userType } = transaction;
+      const result = getCommissionFeeCashOut(
+        userType,
+        allowedCurrencies,
+        transaction,
+        configCashOutJuridical,
+      );
+
+      expect(result).toEqual('0.50');
+    });
+    it('Should return invalid user type', () => {
+      const transaction = {
+        date: '2016-01-10',
+        user_id: 2,
+        user_type: 'legal',
+        type: 'cash_out',
+        operation: {
+          amount: 10.00,
+          currency: 'EUR',
+        },
+      };
+      const { user_type: userType } = transaction;
+      const result = getCommissionFeeCashOut(
+        userType,
+        allowedCurrencies,
+        transaction,
+        configCashOutJuridical,
+      );
+
+      expect(result).toEqual('Invalid user type \'legal\'');
     });
   });
 });
