@@ -1,4 +1,4 @@
-const {
+import {
   getCashInConfig,
   getCashOutNaturalConfig,
   getCashOutJuridicalConfig,
@@ -6,7 +6,7 @@ const {
   isValidCashOutNaturalConfig,
   isValidCashOutJuridicalConfig,
   validateConfigurations,
-} = require('../src/controllers/config');
+} from '../src/controllers/config';
 
 describe('Cash In/Out Configurations', () => {
   const configCashIn = {
@@ -105,7 +105,7 @@ describe('Cash In/Out Configurations', () => {
   it('Should prevent application to process transactions due to Invalid Cash Out (Natural) configuration', () => {
     expect(() => validateConfigurations(
       configCashIn,
-      invalidConfigCashOutNatural,
+      invalidCashOutNaturalConfig,
       configCashOutJuridical,
     )).toThrow();
   });

@@ -1,4 +1,6 @@
-const computeCommissionFeeCashOutNatural = (
+import { addToWeekTransactionHistory } from './transaction';
+
+export const computeCommissionFeeCashOutNatural = (
   amount,
   commissionPercent,
   weekTransactionHistory,
@@ -8,9 +10,7 @@ const computeCommissionFeeCashOutNatural = (
   const commissionPercentRate = commissionPercent / 100;
   let commissionFee = amount * commissionPercentRate;
 
-  const currentUserTransactionHistory = weekTransactionHistory.filter(
-    (transaction) => (transaction.userId === userId),
-  );
+  const currentUserTransactionHistory = weekTransactionHistory[userId];
 
   const computedWeekTransactionTotalAmount = currentUserTransactionHistory.reduce(
     (total, transaction) => (total + transaction.amount),
@@ -32,7 +32,7 @@ const computeCommissionFeeCashOutNatural = (
   return commissionFee.toFixed(2);
 };
 
-const getCommissionFeeCashOutNatural = (
+export const getCommissionFeeCashOutNatural = (
   allowedCurrencies,
   weekTransactionHistory,
   {
@@ -69,7 +69,7 @@ const getCommissionFeeCashOutNatural = (
     : 'Invalid Cash Out(Natural) transaction.'
 );
 
-const computeCommissionFeeCashOutJuridical = (
+export const computeCommissionFeeCashOutJuridical = (
   amount,
   commissionPercent,
   commissionMinAmount,
@@ -85,7 +85,7 @@ const computeCommissionFeeCashOutJuridical = (
   return commissionFee.toFixed(2);
 };
 
-const getCommissionFeeCashOutJuridical = (
+export const getCommissionFeeCashOutJuridical = (
   allowedCurrencies,
   {
     type,
@@ -118,9 +118,32 @@ const getCommissionFeeCashOutJuridical = (
     : 'Invalid Cash Out(Juridical) transaction.'
 );
 
-module.exports = {
-  computeCommissionFeeCashOutNatural,
-  getCommissionFeeCashOutNatural,
-  computeCommissionFeeCashOutJuridical,
-  getCommissionFeeCashOutJuridical,
+export const getCommissionFeeCashOut = (
+  userType,
+  allowedCurrencies,
+  transaction,
+  configCashOut,
+  weekTransactionHistory,
+) => {
+  if (userType === 'natural') {
+    // update weekly transaction history
+    addToWeekTransactionHistory(
+      weekTransactionHistory,
+      transaction,
+    );
+
+    return getCommissionFeeCashOutNatural(
+      allowedCurrencies,
+      weekTransactionHistory,
+      transaction,
+      configCashOut,
+    );
+  } if (userType === 'juridical') {
+    return getCommissionFeeCashOutJuridical(
+      allowedCurrencies,
+      transaction,
+      configCashOut,
+    );
+  }
+  return `Invalid user type '${userType}'`;
 };

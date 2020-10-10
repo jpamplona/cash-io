@@ -1,7 +1,8 @@
-const { parse, isSameWeek } = require('date-fns');
-const { schemaTransaction } = require('../schema');
+/* eslint-disable no-param-reassign */
+import { parse, isSameWeek, isSameYear } from 'date-fns';
+import { schemaTransaction } from '../schema';
 
-const addToWeekTransactionHistory = (
+export const addToWeekTransactionHistory = (
   weekTransactionHistory,
   { user_id: userId, date, operation: { amount } },
 ) => {
@@ -16,31 +17,33 @@ const addToWeekTransactionHistory = (
     amount,
   };
 
-  if (weekTransactionHistory.length > 0) {
-    const firstDateInWeek = weekTransactionHistory[0].date;
+  const currentUserTransactionHistory = weekTransactionHistory[userId];
+
+  if (currentUserTransactionHistory && currentUserTransactionHistory.length > 0) {
+    const firstDateInWeek = currentUserTransactionHistory[0].date;
 
     // check if the current transaction's date is the same with firstDateInWeek
     if (isSameWeek(
       firstDateInWeek,
       parsedDate,
       { weekStartsOn: 1 },
+    ) && isSameYear(
+      firstDateInWeek,
+      parsedDate,
     )) {
-      return [
-        ...weekTransactionHistory,
+      weekTransactionHistory[userId] = [
+        ...currentUserTransactionHistory,
         transaction,
       ];
+    } else {
+      weekTransactionHistory[userId] = [transaction];
     }
-    return [transaction];
+  } else {
+    weekTransactionHistory[userId] = [transaction];
   }
-  return [transaction];
 };
 
-const isValidTransaction = (transaction) => {
+export const isValidTransaction = (transaction) => {
   const { error } = schemaTransaction.validate(transaction);
   return !error;
-};
-
-module.exports = {
-  addToWeekTransactionHistory,
-  isValidTransaction,
 };

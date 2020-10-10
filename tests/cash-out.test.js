@@ -1,9 +1,11 @@
-const {
+/* eslint-disable quote-props */
+import {
   computeCommissionFeeCashOutNatural,
   computeCommissionFeeCashOutJuridical,
   getCommissionFeeCashOutNatural,
   getCommissionFeeCashOutJuridical,
-} = require('../src/controllers/cash-out');
+  getCommissionFeeCashOut,
+} from '../src/controllers/cash-out';
 
 describe('Cash Out', () => {
   const allowedCurrencies = ['EUR'];
@@ -25,13 +27,15 @@ describe('Cash Out', () => {
       it('Commission fee should be 0.00 given the amount 0.00', () => {
         const amount = 0.00;
         const userId = 1;
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-01-05T00:00:00.000Z'),
-            userId: 1,
-            amount: 0.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '1': [
+            {
+              date: new Date('2016-01-05T00:00:00.000Z'),
+              userId: 1,
+              amount: 0.00,
+            },
+          ],
+        };
         const result = computeCommissionFeeCashOutNatural(
           amount,
           percents,
@@ -44,33 +48,39 @@ describe('Cash Out', () => {
       it('Commission fee should be 0.00 given the amount 300.00 and week total amount 500.00 (provide free charge if transaction difference is zero or less)', () => {
         const amount = 300.00;
         const userId = 1;
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-01-05T00:00:00.000Z'),
-            userId: 1,
-            amount: 200.00,
-          },
-          {
-            date: new Date('2016-01-05T00:00:00.000Z'),
-            userId: 2,
-            amount: 1500.00,
-          },
-          {
-            date: new Date('2016-01-05T00:00:00.000Z'),
-            userId: 3,
-            amount: 150.00,
-          },
-          {
-            date: new Date('2016-01-06T00:00:00.000Z'),
-            userId: 1,
-            amount: 300.00,
-          },
-          {
-            date: new Date('2016-01-07T00:00:00.000Z'),
-            userId: 2,
-            amount: 3000.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '1': [
+            {
+              date: new Date('2016-01-05T00:00:00.000Z'),
+              userId: 1,
+              amount: 200.00,
+            },
+            {
+              date: new Date('2016-01-06T00:00:00.000Z'),
+              userId: 1,
+              amount: 300.00,
+            },
+          ],
+          '2': [
+            {
+              date: new Date('2016-01-05T00:00:00.000Z'),
+              userId: 2,
+              amount: 1500.00,
+            },
+            {
+              date: new Date('2016-01-07T00:00:00.000Z'),
+              userId: 2,
+              amount: 3000.00,
+            },
+          ],
+          '3': [
+            {
+              date: new Date('2016-01-05T00:00:00.000Z'),
+              userId: 3,
+              amount: 150.00,
+            },
+          ],
+        };
         const result = computeCommissionFeeCashOutNatural(
           amount,
           percents,
@@ -83,23 +93,29 @@ describe('Cash Out', () => {
       it('Commission fee should be 57.00 given the amount 20000.00 and week total amount 20000.00 (commission is calculated only from exceeded amount)', () => {
         const amount = 20000.00;
         const userId = 1;
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-01-06T00:00:00.000Z'),
-            userId: 1,
-            amount: 20000.00,
-          },
-          {
-            date: new Date('2016-01-06T00:00:00.000Z'),
-            userId: 3,
-            amount: 25000.00,
-          },
-          {
-            date: new Date('2016-01-07T00:00:00.000Z'),
-            userId: 2,
-            amount: 1600.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '1': [
+            {
+              date: new Date('2016-01-06T00:00:00.000Z'),
+              userId: 1,
+              amount: 20000.00,
+            },
+          ],
+          '2': [
+            {
+              date: new Date('2016-01-07T00:00:00.000Z'),
+              userId: 2,
+              amount: 1600.00,
+            },
+          ],
+          '3': [
+            {
+              date: new Date('2016-01-06T00:00:00.000Z'),
+              userId: 3,
+              amount: 25000.00,
+            },
+          ],
+        };
         const result = computeCommissionFeeCashOutNatural(
           amount,
           percents,
@@ -112,33 +128,39 @@ describe('Cash Out', () => {
       it('Commission fee should be 3.00 given the amount 1000.00 and week total amount 31000.00 (commission is calculated normally)', () => {
         const amount = 1000.00;
         const userId = 1;
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-01-06T00:00:00.000Z'),
-            userId: 1,
-            amount: 30000.00,
-          },
-          {
-            date: new Date('2016-01-06T00:00:00.000Z'),
-            userId: 2,
-            amount: 3700.00,
-          },
-          {
-            date: new Date('2016-01-06T00:00:00.000Z'),
-            userId: 3,
-            amount: 1500.00,
-          },
-          {
-            date: new Date('2016-01-07T00:00:00.000Z'),
-            userId: 1,
-            amount: 1000.00,
-          },
-          {
-            date: new Date('2016-01-07T00:00:00.000Z'),
-            userId: 3,
-            amount: 3600.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '1': [
+            {
+              date: new Date('2016-01-06T00:00:00.000Z'),
+              userId: 1,
+              amount: 30000.00,
+            },
+            {
+              date: new Date('2016-01-07T00:00:00.000Z'),
+              userId: 1,
+              amount: 1000.00,
+            },
+          ],
+          '2': [
+            {
+              date: new Date('2016-01-06T00:00:00.000Z'),
+              userId: 2,
+              amount: 3700.00,
+            },
+          ],
+          '3': [
+            {
+              date: new Date('2016-01-06T00:00:00.000Z'),
+              userId: 3,
+              amount: 1500.00,
+            },
+            {
+              date: new Date('2016-01-07T00:00:00.000Z'),
+              userId: 3,
+              amount: 3600.00,
+            },
+          ],
+        };
         const result = computeCommissionFeeCashOutNatural(
           amount,
           percents,
@@ -169,13 +191,15 @@ describe('Cash Out', () => {
             currency: 'EUR',
           },
         };
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-02-23T00:00:00.000Z'),
-            userId: 2,
-            amount: 30000.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '2': [
+            {
+              date: new Date('2016-02-23T00:00:00.000Z'),
+              userId: 2,
+              amount: 30000.00,
+            },
+          ],
+        };
         const result = getCommissionFeeCashOutNatural(
           allowedCurrencies,
           weekTransactionHistory,
@@ -196,13 +220,15 @@ describe('Cash Out', () => {
             currency: 'EUR',
           },
         };
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-02-23T00:00:00.000Z'),
-            userId: 2,
-            amount: 30000.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '2': [
+            {
+              date: new Date('2016-02-23T00:00:00.000Z'),
+              userId: 2,
+              amount: 30000.00,
+            },
+          ],
+        };
         const result = getCommissionFeeCashOutNatural(
           allowedCurrencies,
           weekTransactionHistory,
@@ -223,13 +249,15 @@ describe('Cash Out', () => {
             currency: 'EUR',
           },
         };
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-02-23T00:00:00.000Z'),
-            userId: 2,
-            amount: 30000.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '2': [
+            {
+              date: new Date('2016-02-23T00:00:00.000Z'),
+              userId: 2,
+              amount: 30000.00,
+            },
+          ],
+        };
         const result = getCommissionFeeCashOutNatural(
           allowedCurrencies,
           weekTransactionHistory,
@@ -250,13 +278,15 @@ describe('Cash Out', () => {
             currency: 'PHP',
           },
         };
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-02-23T00:00:00.000Z'),
-            userId: 2,
-            amount: 30000.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '2': [
+            {
+              date: new Date('2016-02-23T00:00:00.000Z'),
+              userId: 2,
+              amount: 30000.00,
+            },
+          ],
+        };
         const result = getCommissionFeeCashOutNatural(
           allowedCurrencies,
           weekTransactionHistory,
@@ -277,13 +307,15 @@ describe('Cash Out', () => {
             currency: 'EUR',
           },
         };
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-02-23T00:00:00.000Z'),
-            userId: 2,
-            amount: 30000.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '2': [
+            {
+              date: new Date('2016-02-23T00:00:00.000Z'),
+              userId: 2,
+              amount: 30000.00,
+            },
+          ],
+        };
         const clonedConfig = { ...config };
         clonedConfig.week_limit.currency = 'PHP';
         const result = getCommissionFeeCashOutNatural(
@@ -306,13 +338,15 @@ describe('Cash Out', () => {
             currency: 'USD',
           },
         };
-        const weekTransactionHistory = [
-          {
-            date: new Date('2016-02-23T00:00:00.000Z'),
-            userId: 2,
-            amount: 30000.00,
-          },
-        ];
+        const weekTransactionHistory = {
+          '2': [
+            {
+              date: new Date('2016-02-23T00:00:00.000Z'),
+              userId: 2,
+              amount: 30000.00,
+            },
+          ],
+        };
         const result = getCommissionFeeCashOutNatural(
           allowedCurrencies,
           weekTransactionHistory,
@@ -491,6 +525,97 @@ describe('Cash Out', () => {
           expect(result).toEqual('Invalid Cash Out(Juridical) transaction.');
         });
       });
+    });
+  });
+
+  describe('Get Cash Out Commission Fee for Natural or Juridical Person', () => {
+    const configCashOutNatural = {
+      percents: 0.3,
+      week_limit: {
+        amount: 1000,
+        currency: 'EUR',
+      },
+    };
+    const configCashOutJuridical = {
+      percents: 0.3,
+      min: {
+        amount: 0.5,
+        currency: 'EUR',
+      },
+    };
+
+    it('Should get cash out commission fee for Natural Person', () => {
+      const transaction = {
+        date: '2016-02-23',
+        user_id: 2,
+        user_type: 'natural',
+        type: 'cash_out',
+        operation: {
+          amount: 30000.00,
+          currency: 'EUR',
+        },
+      };
+      const weekTransactionHistory = {
+        '2': [
+          {
+            date: new Date('2016-02-23T00:00:00.000Z'),
+            userId: 2,
+            amount: 30000.00,
+          },
+        ],
+      };
+      const { user_type: userType } = transaction;
+      const result = getCommissionFeeCashOut(
+        userType,
+        allowedCurrencies,
+        transaction,
+        configCashOutNatural,
+        weekTransactionHistory,
+      );
+
+      expect(result).toEqual('90.00');
+    });
+    it('Should get cash out commission fee for Juridical Person', () => {
+      const transaction = {
+        date: '2016-01-10',
+        user_id: 2,
+        user_type: 'juridical',
+        type: 'cash_out',
+        operation: {
+          amount: 10.00,
+          currency: 'EUR',
+        },
+      };
+      const { user_type: userType } = transaction;
+      const result = getCommissionFeeCashOut(
+        userType,
+        allowedCurrencies,
+        transaction,
+        configCashOutJuridical,
+      );
+
+      expect(result).toEqual('0.50');
+    });
+    it('Should return invalid user type', () => {
+      const transaction = {
+        date: '2016-01-10',
+        user_id: 2,
+        user_type: 'legal',
+        type: 'cash_out',
+        operation: {
+          amount: 10.00,
+          currency: 'EUR',
+        },
+      };
+      const { user_type: userType } = transaction;
+      const result = getCommissionFeeCashOut(
+        userType,
+        allowedCurrencies,
+        transaction,
+        configCashOutJuridical,
+      );
+
+      expect(result).toEqual('Invalid user type \'legal\'');
     });
   });
 });

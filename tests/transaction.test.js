@@ -1,5 +1,9 @@
-const { parse } = require('date-fns');
-const { addToWeekTransactionHistory, isValidTransaction } = require('../src/controllers/transaction');
+/* eslint-disable quote-props */
+import { parse } from 'date-fns';
+import {
+  addToWeekTransactionHistory,
+  isValidTransaction,
+} from '../src/controllers/transaction';
 
 describe('Cash In/Out Transaction', () => {
   it('Should be true if the transaction data is valid', () => {
@@ -93,7 +97,7 @@ describe('Cash In/Out Transaction', () => {
     expect(isValidTransaction(transaction)).toBeFalsy();
   });
   it('Should add transaction to week transaction history - First transaction for the week', () => {
-    const weekTransactionHistory = [];
+    const weekTransactionHistory = {};
     const transaction = {
       date: '2016-01-05',
       user_id: 2,
@@ -104,46 +108,53 @@ describe('Cash In/Out Transaction', () => {
         currency: 'EUR',
       },
     };
-    const result = addToWeekTransactionHistory(
+
+    addToWeekTransactionHistory(
       weekTransactionHistory,
       transaction,
     );
-    const expectedWeekTransactionHistory = [
-      {
-        date: parse(
-          '2016-01-05',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 30000.00,
-      },
-    ];
-    expect(result).toBeTruthy();
-    expect(Array.isArray(result)).toBeTruthy();
-    expect(result).toEqual(expectedWeekTransactionHistory);
+
+    const expectedWeekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2016-01-05',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 30000.00,
+        },
+      ],
+    };
+
+    expect(weekTransactionHistory).toBeTruthy();
+    expect(typeof weekTransactionHistory === 'object').toBeTruthy();
+    expect(weekTransactionHistory).toEqual(expectedWeekTransactionHistory);
   });
   it('Should add transaction to week transaction history since the transaction date is in the same week', () => {
-    const weekTransactionHistory = [
-      {
-        date: parse(
-          '2016-01-05',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 30000.00,
-      },
-      {
-        date: parse(
-          '2016-01-06',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 2400.00,
-      },
-    ];
+    const weekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2016-01-05',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 30000.00,
+        },
+        {
+          date: parse(
+            '2016-01-06',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 2400.00,
+        },
+      ],
+    };
     const transaction = {
       date: '2016-01-07',
       user_id: 2,
@@ -154,64 +165,71 @@ describe('Cash In/Out Transaction', () => {
         currency: 'EUR',
       },
     };
-    const result = addToWeekTransactionHistory(
+
+    addToWeekTransactionHistory(
       weekTransactionHistory,
       transaction,
     );
-    const expectedWeekTransactionHistory = [
-      {
-        date: parse(
-          '2016-01-05',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 30000.00,
-      },
-      {
-        date: parse(
-          '2016-01-06',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 2400.00,
-      },
-      {
-        date: parse(
-          '2016-01-07',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 1000000.00,
-      },
-    ];
-    expect(result).toBeTruthy();
-    expect(Array.isArray(result)).toBeTruthy();
-    expect(result).toEqual(expectedWeekTransactionHistory);
+
+    const expectedWeekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2016-01-05',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 30000.00,
+        },
+        {
+          date: parse(
+            '2016-01-06',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 2400.00,
+        },
+        {
+          date: parse(
+            '2016-01-07',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 1000000.00,
+        },
+      ],
+    };
+
+    expect(weekTransactionHistory).toBeTruthy();
+    expect(typeof weekTransactionHistory === 'object').toBeTruthy();
+    expect(weekTransactionHistory).toEqual(expectedWeekTransactionHistory);
   });
   it('Should add transaction to week transaction history - Different transaction week', () => {
-    const weekTransactionHistory = [
-      {
-        date: parse(
-          '2016-01-05',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 30000.00,
-      },
-      {
-        date: parse(
-          '2016-01-06',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
-        amount: 2400.00,
-      },
-    ];
+    const weekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2016-01-05',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 30000.00,
+        },
+        {
+          date: parse(
+            '2016-01-06',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 2400.00,
+        },
+      ],
+    };
     const transaction = {
       date: '2016-01-18',
       user_id: 2,
@@ -222,23 +240,85 @@ describe('Cash In/Out Transaction', () => {
         currency: 'EUR',
       },
     };
-    const result = addToWeekTransactionHistory(
+
+    addToWeekTransactionHistory(
       weekTransactionHistory,
       transaction,
     );
-    const expectedWeekTransactionHistory = [
-      {
-        date: parse(
-          '2016-01-18',
-          'yyyy-MM-dd',
-          new Date(),
-        ),
-        userId: 2,
+
+    const expectedWeekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2016-01-18',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 1000000.00,
+        },
+      ],
+    };
+
+    expect(weekTransactionHistory).toBeTruthy();
+    expect(typeof weekTransactionHistory === 'object').toBeTruthy();
+    expect(weekTransactionHistory).toEqual(expectedWeekTransactionHistory);
+  });
+  it('Should add transaction to week transaction history - Transaction week starts in one year and ends in other year', () => {
+    const weekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2020-12-28',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 30000.00,
+        },
+        {
+          date: parse(
+            '2020-12-31',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 1500.00,
+        },
+      ],
+    };
+    const transaction = {
+      date: '2021-01-01',
+      user_id: 2,
+      user_type: 'natural',
+      type: 'cash_out',
+      operation: {
         amount: 1000000.00,
+        currency: 'EUR',
       },
-    ];
-    expect(result).toBeTruthy();
-    expect(Array.isArray(result)).toBeTruthy();
-    expect(result).toEqual(expectedWeekTransactionHistory);
+    };
+
+    addToWeekTransactionHistory(
+      weekTransactionHistory,
+      transaction,
+    );
+
+    const expectedWeekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2021-01-01',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 1000000.00,
+        },
+      ],
+    };
+
+    expect(weekTransactionHistory).toBeTruthy();
+    expect(typeof weekTransactionHistory === 'object').toBeTruthy();
+    expect(weekTransactionHistory).toEqual(expectedWeekTransactionHistory);
   });
 });

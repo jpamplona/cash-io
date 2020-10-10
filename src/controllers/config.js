@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-expressions */
-const http = require('http');
-const {
+import http from 'http';
+import {
   schemaCashInConfig,
   schemaCashOutNaturalConfig,
   schemaCashOutJuridicalConfig,
-} = require('../schema');
+} from '../schema';
 
 const BASE_URL = 'http://private-38e18c-uzduotis.apiary-mock.com/config';
 
 // eslint-disable-next-line arrow-body-style
-const getConfig = (url) => {
+export const getConfig = (url) => {
   // eslint-disable-next-line no-new
   return new Promise((resolve, reject) => {
     http
@@ -44,26 +44,26 @@ const getConfig = (url) => {
   });
 };
 
-const getCashInConfig = getConfig(`${BASE_URL}/cash-in`);
-const getCashOutNaturalConfig = getConfig(`${BASE_URL}/cash-out/natural`);
-const getCashOutJuridicalConfig = getConfig(`${BASE_URL}/cash-out/juridical`);
+export const getCashInConfig = getConfig(`${BASE_URL}/cash-in`);
+export const getCashOutNaturalConfig = getConfig(`${BASE_URL}/cash-out/natural`);
+export const getCashOutJuridicalConfig = getConfig(`${BASE_URL}/cash-out/juridical`);
 
-const isValidCashInConfig = (config) => {
+export const isValidCashInConfig = (config) => {
   const { error } = schemaCashInConfig.validate(config);
   return !error;
 };
 
-const isValidCashOutNaturalConfig = (config) => {
+export const isValidCashOutNaturalConfig = (config) => {
   const { error } = schemaCashOutNaturalConfig.validate(config);
   return !error;
 };
 
-const isValidCashOutJuridicalConfig = (config) => {
+export const isValidCashOutJuridicalConfig = (config) => {
   const { error } = schemaCashOutJuridicalConfig.validate(config);
   return !error;
 };
 
-const validateConfigurations = (
+export const validateConfigurations = (
   configCashIn,
   configCashOutNatural,
   configCashOutJuridical,
@@ -81,15 +81,4 @@ const validateConfigurations = (
   if (!isValidCashOutJuridicalConfig(configCashOutJuridical)) {
     throw new Error(`${errMessage}: Invalid Cash Out(Juridical) configuration`);
   }
-};
-
-module.exports = {
-  getConfig,
-  getCashInConfig,
-  getCashOutNaturalConfig,
-  getCashOutJuridicalConfig,
-  isValidCashInConfig,
-  isValidCashOutNaturalConfig,
-  isValidCashOutJuridicalConfig,
-  validateConfigurations,
 };

@@ -1,4 +1,7 @@
-const { computeCommissionFeeCashIn, getCommissionFeeCashIn } = require('../src/controllers/cash-in');
+import {
+  computeCommissionFeeCashIn,
+  getCommissionFeeCashIn,
+} from '../src/controllers/cash-in';
 
 describe('Cash In', () => {
   const config = {

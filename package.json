@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint --fix ./src",
-    "dev": "./node_modules/.bin/nodemon app.js --exec 'npm run lint'",
-    "start": "node app.js input.json",
+    "dev": "./node_modules/.bin/nodemon --exec babel-node app.js --exec 'npm run lint'",
+    "start": "babel-node app.js input.json",
     "test": "jest"
   },
   "repository": {
@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/jpamplona/cash-io#readme",
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
     "eslint": "^7.10.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1",
