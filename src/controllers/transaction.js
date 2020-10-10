@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { parse, isSameWeek } from 'date-fns';
+import { parse, isSameWeek, isSameYear } from 'date-fns';
 import { schemaTransaction } from '../schema';
 
 export const addToWeekTransactionHistory = (
@@ -27,6 +27,9 @@ export const addToWeekTransactionHistory = (
       firstDateInWeek,
       parsedDate,
       { weekStartsOn: 1 },
+    ) && isSameYear(
+      firstDateInWeek,
+      parsedDate,
     )) {
       weekTransactionHistory[userId] = [
         ...currentUserTransactionHistory,

@@ -264,4 +264,61 @@ describe('Cash In/Out Transaction', () => {
     expect(typeof weekTransactionHistory === 'object').toBeTruthy();
     expect(weekTransactionHistory).toEqual(expectedWeekTransactionHistory);
   });
+  it('Should add transaction to week transaction history - Transaction week starts in one year and ends in other year', () => {
+    const weekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2020-12-28',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 30000.00,
+        },
+        {
+          date: parse(
+            '2020-12-31',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 1500.00,
+        },
+      ],
+    };
+    const transaction = {
+      date: '2021-01-01',
+      user_id: 2,
+      user_type: 'natural',
+      type: 'cash_out',
+      operation: {
+        amount: 1000000.00,
+        currency: 'EUR',
+      },
+    };
+
+    addToWeekTransactionHistory(
+      weekTransactionHistory,
+      transaction,
+    );
+
+    const expectedWeekTransactionHistory = {
+      '2': [
+        {
+          date: parse(
+            '2021-01-01',
+            'yyyy-MM-dd',
+            new Date(),
+          ),
+          userId: 2,
+          amount: 1000000.00,
+        },
+      ],
+    };
+
+    expect(weekTransactionHistory).toBeTruthy();
+    expect(typeof weekTransactionHistory === 'object').toBeTruthy();
+    expect(weekTransactionHistory).toEqual(expectedWeekTransactionHistory);
+  });
 });
