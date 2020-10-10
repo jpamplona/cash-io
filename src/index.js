@@ -1,18 +1,19 @@
-const {
+import {
   getCashInConfig,
   getCashOutNaturalConfig,
   getCashOutJuridicalConfig,
   validateConfigurations,
-} = require('./controllers/config');
-const { read } = require('./controllers/file');
-const { getCommissionFeeCashIn } = require('./controllers/cash-in');
-const {
+} from './controllers/config';
+import { read } from './controllers/file';
+import { getCommissionFeeCashIn } from './controllers/cash-in';
+import {
   getCommissionFeeCashOutNatural,
   getCommissionFeeCashOutJuridical,
-} = require('./controllers/cash-out');
-const { addToWeekTransactionHistory, isValidTransaction } = require('./controllers/transaction');
+} from './controllers/cash-out';
+import { addToWeekTransactionHistory, isValidTransaction } from './controllers/transaction';
 
-const execute = (file) => {
+// eslint-disable-next-line import/prefer-default-export
+export const execute = (file) => {
   const allowedCurrencies = ['EUR'];
 
   const start = async () => {
@@ -97,5 +98,3 @@ const execute = (file) => {
 
   start();
 };
-
-module.exports = { execute };

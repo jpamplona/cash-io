@@ -1,4 +1,4 @@
-const computeCommissionFeeCashOutNatural = (
+export const computeCommissionFeeCashOutNatural = (
   amount,
   commissionPercent,
   weekTransactionHistory,
@@ -32,7 +32,7 @@ const computeCommissionFeeCashOutNatural = (
   return commissionFee.toFixed(2);
 };
 
-const getCommissionFeeCashOutNatural = (
+export const getCommissionFeeCashOutNatural = (
   allowedCurrencies,
   weekTransactionHistory,
   {
@@ -69,7 +69,7 @@ const getCommissionFeeCashOutNatural = (
     : 'Invalid Cash Out(Natural) transaction.'
 );
 
-const computeCommissionFeeCashOutJuridical = (
+export const computeCommissionFeeCashOutJuridical = (
   amount,
   commissionPercent,
   commissionMinAmount,
@@ -85,7 +85,7 @@ const computeCommissionFeeCashOutJuridical = (
   return commissionFee.toFixed(2);
 };
 
-const getCommissionFeeCashOutJuridical = (
+export const getCommissionFeeCashOutJuridical = (
   allowedCurrencies,
   {
     type,
@@ -117,10 +117,3 @@ const getCommissionFeeCashOutJuridical = (
     )
     : 'Invalid Cash Out(Juridical) transaction.'
 );
-
-module.exports = {
-  computeCommissionFeeCashOutNatural,
-  getCommissionFeeCashOutNatural,
-  computeCommissionFeeCashOutJuridical,
-  getCommissionFeeCashOutJuridical,
-};

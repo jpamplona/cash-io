@@ -1,9 +1,9 @@
-const {
+import {
   computeCommissionFeeCashOutNatural,
   computeCommissionFeeCashOutJuridical,
   getCommissionFeeCashOutNatural,
   getCommissionFeeCashOutJuridical,
-} = require('../src/controllers/cash-out');
+} from '../src/controllers/cash-out';
 
 describe('Cash Out', () => {
   const allowedCurrencies = ['EUR'];

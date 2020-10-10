@@ -1,4 +1,4 @@
-const computeCommissionFeeCashIn = (
+export const computeCommissionFeeCashIn = (
   amount,
   commissionPercent,
   commissionMaxAmount,
@@ -14,7 +14,7 @@ const computeCommissionFeeCashIn = (
   return commissionFee.toFixed(2);
 };
 
-const getCommissionFeeCashIn = (
+export const getCommissionFeeCashIn = (
   allowedCurrencies,
   {
     type,
@@ -41,8 +41,3 @@ const getCommissionFeeCashIn = (
   )
     ? computeCommissionFeeCashIn(operationAmount, percents, configMaxAmount)
     : 'Invalid Cash In transaction.');
-
-module.exports = {
-  computeCommissionFeeCashIn,
-  getCommissionFeeCashIn,
-};

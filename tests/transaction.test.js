@@ -1,5 +1,8 @@
-const { parse } = require('date-fns');
-const { addToWeekTransactionHistory, isValidTransaction } = require('../src/controllers/transaction');
+import { parse } from 'date-fns';
+import {
+  addToWeekTransactionHistory,
+  isValidTransaction,
+} from '../src/controllers/transaction';
 
 describe('Cash In/Out Transaction', () => {
   it('Should be true if the transaction data is valid', () => {

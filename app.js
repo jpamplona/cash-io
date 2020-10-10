@@ -1,6 +1,6 @@
-const app = require('./src');
+import { execute } from './src';
 
 const fileName = process.argv[2];
 const file = `./${fileName}`;
 
-app.execute(file);
+execute(file);

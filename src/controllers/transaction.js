@@ -1,7 +1,7 @@
-const { parse, isSameWeek } = require('date-fns');
-const { schemaTransaction } = require('../schema');
+import { parse, isSameWeek } from 'date-fns';
+import { schemaTransaction } from '../schema';
 
-const addToWeekTransactionHistory = (
+export const addToWeekTransactionHistory = (
   weekTransactionHistory,
   { user_id: userId, date, operation: { amount } },
 ) => {
@@ -35,12 +35,7 @@ const addToWeekTransactionHistory = (
   return [transaction];
 };
 
-const isValidTransaction = (transaction) => {
+export const isValidTransaction = (transaction) => {
   const { error } = schemaTransaction.validate(transaction);
   return !error;
-};
-
-module.exports = {
-  addToWeekTransactionHistory,
-  isValidTransaction,
 };

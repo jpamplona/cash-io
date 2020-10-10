@@ -1,4 +1,4 @@
-const { read } = require('../src/controllers/file');
+import { read } from '../src/controllers/file';
 
 const dir = `${__dirname}/input_files`;
 
