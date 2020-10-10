@@ -8,9 +8,7 @@ export const computeCommissionFeeCashOutNatural = (
   const commissionPercentRate = commissionPercent / 100;
   let commissionFee = amount * commissionPercentRate;
 
-  const currentUserTransactionHistory = weekTransactionHistory.filter(
-    (transaction) => (transaction.userId === userId),
-  );
+  const currentUserTransactionHistory = weekTransactionHistory[userId];
 
   const computedWeekTransactionTotalAmount = currentUserTransactionHistory.reduce(
     (total, transaction) => (total + transaction.amount),

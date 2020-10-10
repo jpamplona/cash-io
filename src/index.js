@@ -39,7 +39,7 @@ export const execute = (file) => {
       // read input file
       const transactions = await read(file);
 
-      let weekTransactionHistory = [];
+      const weekTransactionHistory = {};
 
       transactions.forEach((transaction) => {
         // check if transaction is valid
@@ -58,7 +58,7 @@ export const execute = (file) => {
           } else if (transactionType === 'cash_out') {
             if (userType === 'natural') {
               // update weekly transaction history
-              weekTransactionHistory = addToWeekTransactionHistory(
+              addToWeekTransactionHistory(
                 weekTransactionHistory,
                 transaction,
               );
