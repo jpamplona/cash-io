@@ -1,5 +1,5 @@
 /* eslint-disable quote-props */
-import { parse } from 'date-fns';
+import { parse, format } from 'date-fns';
 import {
   addToWeekTransactionHistory,
   isValidTransaction,
@@ -22,6 +22,25 @@ describe('Cash In/Out Transaction', () => {
   it('Should be false if the transaction data is invalid - Invalid date', () => {
     const transaction = {
       date: '2016-13-32',
+      user_id: 1,
+      user_type: 'juridical',
+      type: 'cash_in',
+      operation: {
+        amount: 2500.00,
+        currency: 'EUR',
+      },
+    };
+    expect(isValidTransaction(transaction)).toBeFalsy();
+  });
+  it('Should be false if the transaction date is invalid - Transaction date should not be a future date', () => {
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 5);
+
+    const transaction = {
+      date: format(
+        futureDate,
+        'yyyy-MM-dd',
+      ),
       user_id: 1,
       user_type: 'juridical',
       type: 'cash_in',
@@ -269,7 +288,7 @@ describe('Cash In/Out Transaction', () => {
       '2': [
         {
           date: parse(
-            '2020-12-28',
+            '2019-12-30',
             'yyyy-MM-dd',
             new Date(),
           ),
@@ -278,7 +297,7 @@ describe('Cash In/Out Transaction', () => {
         },
         {
           date: parse(
-            '2020-12-31',
+            '2019-12-31',
             'yyyy-MM-dd',
             new Date(),
           ),
@@ -288,7 +307,7 @@ describe('Cash In/Out Transaction', () => {
       ],
     };
     const transaction = {
-      date: '2021-01-01',
+      date: '2020-01-02',
       user_id: 2,
       user_type: 'natural',
       type: 'cash_out',
@@ -307,7 +326,7 @@ describe('Cash In/Out Transaction', () => {
       '2': [
         {
           date: parse(
-            '2021-01-01',
+            '2020-01-02',
             'yyyy-MM-dd',
             new Date(),
           ),
