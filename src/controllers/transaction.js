@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { parse, isSameWeek, isSameYear } from 'date-fns';
+import {
+  parse, isSameWeek, isSameYear, format,
+} from 'date-fns';
 import { schemaTransaction } from '../schema';
 
 export const addToWeekTransactionHistory = (
@@ -44,6 +46,8 @@ export const addToWeekTransactionHistory = (
 };
 
 export const isValidTransaction = (transaction) => {
+  const dateToday = format(new Date(), 'yyyy-MM-dd');
   const { error } = schemaTransaction.validate(transaction);
-  return !error;
+
+  return (transaction.date <= dateToday) && !error;
 };
